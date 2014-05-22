@@ -1,6 +1,10 @@
+- 2014-05-22 -------
+Added Ansible Playbook to compile and install Nagios from source.
+-
 
-- 2014-02-0x -------
+ansible/nagios-src - Version 1.0
 
+- 2014-02-09 -------
 First initial release
 -
 
