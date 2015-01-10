@@ -11,7 +11,7 @@
   when: is_centos
 
 - name: install apache
-  apt: pkg={{ item }} state=present
+  apt: pkg={{ item }} state=present update_cache=yes
   with_items:
    - apache2
    - php5-gd
@@ -21,7 +21,7 @@
   when: is_debian
 
 - name: install apache
-  apt: pkg={{ item }} state=present
+  apt: pkg={{ item }} state=present update_cache=yes
   with_items:
    - apache2
    - php5-gd
