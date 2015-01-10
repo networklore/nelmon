@@ -7,8 +7,8 @@ nagiosurl: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.0.8.ta
 nagiossrc: nagios-4.0.8
 
 # Define the download url for the Plugins and the version you want to use.
-pluginsurl: http://www.nagios-plugins.org/download/nagios-plugins-2.0.2.tar.gz
-pluginssrc: nagios-plugins-2.0.2
+pluginsurl: http://www.nagios-plugins.org/download/nagios-plugins-2.0.3.tar.gz
+pluginssrc: nagios-plugins-2.0.3
 
 # This NRPE package is only used for the plugin, as the nrpe plugin on some distributions
 # require the distributions Nagios package to be installed.
