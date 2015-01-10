@@ -3,8 +3,8 @@
 
 
 # Define the download url for the Nagios Core source files and the version you want to use.
-nagiosurl: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.0.6.tar.gz
-nagiossrc: nagios-4.0.6
+nagiosurl: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.0.8.tar.gz
+nagiossrc: nagios-4.0.8
 
 # Define the download url for the Plugins and the version you want to use.
 pluginsurl: http://www.nagios-plugins.org/download/nagios-plugins-2.0.2.tar.gz
