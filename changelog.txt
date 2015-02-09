@@ -1,6 +1,10 @@
+- 2015-02-09 -------
+Added Check Asa Connections v1.1
+plugins/nm_check_asa_connections
+-
 
 - 2015-01-26 -------
-Added Nelmon module version 1.0 and nm_check_admin_up_oper_down plugi
+Added Nelmon module version 1.0 and nm_check_admin_up_oper_down plugin
 -
 nelmon/
 plugins/nm_check_admin_up_oper_down
