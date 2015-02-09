@@ -1,0 +1,62 @@
+#!/usr/bin/env python2
+#####################################################################
+import nelmon.common
+import nelmon.snmp
+import nelmon.snmp_oids
+
+
+MIN_NELMON_VER = "1.0"
+PLUGIN_VERSION = "1.0"
+
+description = """This plugin queries a Cisco ASA device by SNMP to check how many
+current connections are established through the firewall. 
+
+nm_check_asa_connections v.%s
+""" % PLUGIN_VERSION
+
+# For more information about this plugin visit:
+# http://networklore.com/check-asa-connections/
+
+def main():
+    nelmon.common.verify_nelmon_features(MIN_NELMON_VER, nelmon.__version__)
+    argparser = nelmon.snmp.SnmpArguments(description)
+    argparser.parser.add_argument('-w',
+        help='Number of connections to report warning state',
+        required=True,
+        type=int)
+    argparser.parser.add_argument('-c',
+        help='Number of connections to report critical state',
+        required=True,
+        type=int)
+
+    args = argparser.parser.parse_args()
+
+    snmp = nelmon.snmp.SnmpHandler(args)
+    o = nelmon.snmp_oids.DefineOid("get")
+    v = nelmon.snmp_oids.DefineOid("value")
+    e = nelmon.common.ExitStatus()
+
+    current_connections = o.cfwConnectionStatValue + ".40.6"
+    var_binds = snmp.snmp_get(current_connections)
+
+    exit_code = e.UNKNOWN
+    exit_string = "An unknown error occurred"
+
+    for oid, value in var_binds:
+        if v.cfwConnectionStatValue in oid.prettyPrint():
+            connections = int(value.prettyPrint())
+            if args.c <= connections:
+                exit_code = e.CRITICAL
+                exit_string = "%d connections" % connections
+            elif args.w <= connections:
+                exit_code = e.WARNING
+                exit_string = "%d connections" % connections
+            else:
+                exit_code = e.OK
+                exit_string = "%d connections" % connections
+
+    nelmon.common.exit_string(exit_string, exit_code)
+
+
+if __name__ == "__main__":
+    main()
