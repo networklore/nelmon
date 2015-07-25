@@ -4,8 +4,8 @@ import nelmon.common
 import nelmon.snmp
 from nelmon.snmp_oids import CiscoOids
 
-MIN_NELMON_VER = "1.0"
-PLUGIN_VERSION = "1.0"
+MIN_NELMON_VER = "1.1"
+PLUGIN_VERSION = "1.1"
 
 description = """This plugin queries a Cisco ASA device by SNMP to check how many
 current connections are established through the firewall.

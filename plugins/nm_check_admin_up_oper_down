@@ -5,8 +5,8 @@ import nelmon.snmp
 
 from nelmon.snmp_oids import CiscoOids
 
-MIN_NELMON_VER = "1.0"
-PLUGIN_VERSION = "1.0"
+MIN_NELMON_VER = "1.1"
+PLUGIN_VERSION = "1.1"
 description = """This plugin queries a network device by SNMP to check if there are
 any interfaces which are in the admin up (no shutdown) but are operationally
 down. It returns a warning or critical state depending on if you use -w or -c
