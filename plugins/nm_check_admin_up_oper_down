@@ -2,7 +2,8 @@
 #####################################################################
 import nelmon.common
 import nelmon.snmp
-import nelmon.snmp_oids
+
+from nelmon.snmp_oids import CiscoOids
 
 MIN_NELMON_VER = "1.0"
 PLUGIN_VERSION = "1.0"
@@ -21,7 +22,7 @@ def main():
 
     nelmon.common.verify_nelmon_features(MIN_NELMON_VER, nelmon.__version__)
     e = nelmon.common.ExitStatus()
-  
+
 
     argparser = nelmon.snmp.SnmpArguments(description)
     argparser.parser.add_argument('-w', action='store_true',
@@ -38,14 +39,13 @@ def main():
     else:
         nelmon.common.exit_with_unknown("Use -w or -c")
 
-    snmp = nelmon.snmp.SnmpHandler(args)
-    o = nelmon.snmp_oids.DefineOid("get")
-    v = nelmon.snmp_oids.DefineOid("value")
+    snmp = nelmon.snmp.NelmonSnmp(args)
+    o = CiscoOids()
     oidlist = []
     oidlist.append(o.ifAdminStatus)
     oidlist.append(o.ifOperStatus)
 
-    var_table = snmp.snmp_getnext_list(oidlist)
+    var_table = snmp.getnext(*oidlist)
 
     admin_up = []
     oper_down = []
@@ -53,13 +53,11 @@ def main():
     for var_binds in var_table:
 
         for oid, value in var_binds:
-            current_oid = oid.prettyPrint()
-            current_val = value.prettyPrint()
-            if v.ifAdminStatus in current_oid and current_val == "1":
-                ifIndex = int(current_oid.rsplit('.', 1)[-1])
+            if o.ifAdminStatus in oid and value == 1:
+                ifIndex = int(oid.rsplit('.', 1)[-1])
                 admin_up.append(ifIndex)
-            if v.ifOperStatus in current_oid and current_val == "2":
-                ifIndex = int(current_oid.rsplit('.', 1)[-1])
+            if o.ifOperStatus in oid and value == 2:
+                ifIndex = int(oid.rsplit('.', 1)[-1])
                 oper_down.append(ifIndex)
 
     down_interfaces = list(set(admin_up) & set(oper_down))
@@ -72,21 +70,19 @@ def main():
     for ifIndex in down_interfaces:
         oidlist.append(o.ifDescr + "." + str(ifIndex))
         oidlist.append(o.ifAlias + "." + str(ifIndex))
-    var_binds = snmp.snmp_get_list(oidlist)
+    var_binds = snmp.get(*oidlist)
     for oid, value in var_binds:
-        current_oid = oid.prettyPrint()
-        current_val = value.prettyPrint()
-        if v.ifDescr in current_oid:
-            ifIndex = int(current_oid.rsplit('.', 1)[-1])
-            interface_descr[ifIndex] = current_val
-        if v.ifAlias in current_oid:
-            ifIndex = int(current_oid.rsplit('.', 1)[-1])
-            interface_alias[ifIndex] = current_val
+        if o.ifDescr in oid:
+            ifIndex = int(oid.rsplit('.', 1)[-1])
+            interface_descr[ifIndex] = value
+        if o.ifAlias in oid:
+            ifIndex = int(oid.rsplit('.', 1)[-1])
+            interface_alias[ifIndex] = value
     return_string = []
 
     if len(down_interfaces) > 1:
         return_string.append("%d interfaces down" % (len(down_interfaces)))
-        
+
     for ifIndex in down_interfaces:
         if len(str(interface_alias[ifIndex])) > 0:
             return_string.append(str(interface_descr[ifIndex]) + " - " + str(interface_alias[ifIndex]))

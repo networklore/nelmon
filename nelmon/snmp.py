@@ -5,16 +5,13 @@
 
 import sys
 import nelmon.common
+from nelmon.common import exit_with_error
 from argparse import RawTextHelpFormatter
-from pysnmp.entity.rfc3413.oneliner import cmdgen
-
+from nelsnmp.snmp import cmdgen, SnmpHandler
 
 #####################################################################
 # CLASSES
 #####################################################################
-
-
-
 
 class SnmpArguments(object):
 
@@ -46,102 +43,42 @@ class SnmpArguments(object):
         self.parser.add_argument('-X', help="SNMPv3 privacy password")
 
 
-class SnmpHandler(object):
+class NelmonSnmp(SnmpHandler):
 
     def __init__(self, args):
-        self.verify_snmp_arguments(args)
-        self.set_snmp_parameters(args)
+        self._verify_snmp_arguments(args)
+        self._set_snmp_parameters(args)
 
-    def set_snmp_parameters(self, args):
+    def _raise_error(self, ErrorType, error_data):
+        exit_with_error(error_data)
+
+    def _set_snmp_parameters(self, args):
         # Change to SNMP community auth
+        self.version = args.P
         if args.P == "2c":
             self.snmp_auth = cmdgen.CommunityData(args.C)
+
         elif args.P == "3":
+            self.username = args.U
             if args.a == "SHA":
-                integrity_proto = cmdgen.usmHMACSHAAuthProtocol
+                self.integrity = cmdgen.usmHMACSHAAuthProtocol
             elif args.a == "MD5":
-                integrity_proto = cmdgen.usmHMACMD5AuthProtocol
+                self.integrity = cmdgen.usmHMACMD5AuthProtocol
 
             if args.x == "AES":
-                privacy_proto = cmdgen.usmAesCfb128Protocol
+                self.privacy = cmdgen.usmAesCfb128Protocol
             elif args.x == "DES":
-                privacy_proto = cmdgen.usmDESPrivProtocol
+                self.privacy = cmdgen.usmDESPrivProtocol
 
-            if args.L == "authNoPriv":
-                self.snmp_auth = cmdgen.UsmUserData(
-                    args.U, authKey=args.A,
-                    authProtocol=integrity_proto)
-            elif args.L == "authPriv":
-                self.snmp_auth = cmdgen.UsmUserData(
-                    args.U, authKey=args.A,
-                    privKey=args.X,
-                    authProtocol=integrity_proto,
-                    privProtocol=privacy_proto)
+            self.authkey = args.A
+
+            if args.L == "authPriv":
+                self.privkey = args.X
 
         self.host = args.H
         self.port = int(args.p)
 
-    def snmp_get(self, oid):
-        cmdGen = cmdgen.CommandGenerator()
-        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
-            self.snmp_auth,
-            cmdgen.UdpTransportTarget((self.host, self.port)),
-            cmdgen.MibVariable(oid,)
-        )
-
-        if errorIndication:
-            nelmon.common.exit_with_error(errorIndication)
-
-        if errorStatus:
-            nelmon.common.exit_with_error(errorStatus)
-
-        return varBinds
-
-    def snmp_get_list(self, oidlist):
-
-        snmpquery = []
-        for oid in oidlist:
-            snmpquery.append(cmdgen.MibVariable(oid,), )
-        cmdGen = cmdgen.CommandGenerator()
-        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
-            self.snmp_auth,
-            cmdgen.UdpTransportTarget((self.host, self.port)),
-            *snmpquery
-        )
-
-        if errorIndication:
-            nelmon.common.exit_with_error(errorIndication)
-
-        if errorStatus:
-            nelmon.common.exit_with_error(errorStatus)
-
-        return varBinds
-
-
-    def snmp_getnext_list(self, oidlist):
-
-        snmpquery = []
-        for oid in oidlist:
-            snmpquery.append(cmdgen.MibVariable(oid,), )
-        cmdGen = cmdgen.CommandGenerator()
-        errorIndication, errorStatus, errorIndex, varTable = cmdGen.nextCmd(
-            self.snmp_auth,
-            cmdgen.UdpTransportTarget((self.host, self.port)),
-            *snmpquery
-        )
-
-        if errorIndication:
-            nelmon.common.exit_with_error(errorIndication)
-
-        if errorStatus:
-            nelmon.common.exit_with_error(errorStatus)
-
-        return varTable
-
-
-
-
-    def verify_snmp_arguments(self, args):
+    def _verify_snmp_arguments(self, args):
         if args.P == "2c" and args.C is None:
             exit_with_error('Specify community when using SNMP 2c')
         if args.P == "3" and args.U is None:
@@ -164,4 +101,3 @@ class SnmpHandler(object):
             exit_with_error('Specify privacy protocol when using authPriv')
         if args.L == "authPriv" and args.X is None:
             exit_with_error('Specify privacy password when using authPriv')
-
