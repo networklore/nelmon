@@ -3,7 +3,7 @@
 import nelmon.common
 import nelmon.snmp
 
-from nelmon.snmp_oids import CiscoOids
+from nelmon.snmp_oids import cisco_oids as O
 from nelmon import constants as C
 
 MIN_NELMON_VER = "1.1"
@@ -22,8 +22,6 @@ def main():
 
 
     nelmon.common.verify_nelmon_features(MIN_NELMON_VER, nelmon.__version__)
-    #e = nelmon.common.ExitStatus()
-
 
     argparser = nelmon.snmp.SnmpArguments(description)
     argparser.parser.add_argument('-w', action='store_true',
@@ -41,10 +39,10 @@ def main():
         nelmon.common.exit_with_unknown("Use -w or -c")
 
     snmp = nelmon.snmp.NelmonSnmp(args)
-    o = CiscoOids()
+    #o = CiscoOids()
     oidlist = []
-    oidlist.append(o.ifAdminStatus)
-    oidlist.append(o.ifOperStatus)
+    oidlist.append(O.ifAdminStatus)
+    oidlist.append(O.ifOperStatus)
 
     var_table = snmp.getnext(*oidlist)
 
@@ -54,10 +52,10 @@ def main():
     for var_binds in var_table:
 
         for oid, value in var_binds:
-            if o.ifAdminStatus in oid and value == 1:
+            if O.ifAdminStatus in oid and value == 1:
                 ifIndex = int(oid.rsplit('.', 1)[-1])
                 admin_up.append(ifIndex)
-            if o.ifOperStatus in oid and value == 2:
+            if O.ifOperStatus in oid and value == 2:
                 ifIndex = int(oid.rsplit('.', 1)[-1])
                 oper_down.append(ifIndex)
 
@@ -69,14 +67,14 @@ def main():
     interface_descr = {}
     interface_alias = {}
     for ifIndex in down_interfaces:
-        oidlist.append(o.ifDescr + "." + str(ifIndex))
-        oidlist.append(o.ifAlias + "." + str(ifIndex))
+        oidlist.append(O.ifDescr + "." + str(ifIndex))
+        oidlist.append(O.ifAlias + "." + str(ifIndex))
     var_binds = snmp.get(*oidlist)
     for oid, value in var_binds:
-        if o.ifDescr in oid:
+        if O.ifDescr in oid:
             ifIndex = int(oid.rsplit('.', 1)[-1])
             interface_descr[ifIndex] = value
-        if o.ifAlias in oid:
+        if O.ifAlias in oid:
             ifIndex = int(oid.rsplit('.', 1)[-1])
             interface_alias[ifIndex] = value
     return_string = []
