@@ -1,10 +1,9 @@
 import sys
 
-try:
-    import argparse
-except:
-    print "argparse module is missing"
-    sys.exit()
+from nelmon import constants as C
+
+import argparse
+
 
 #####################################################################
 # CLASSES
@@ -35,26 +34,15 @@ class NlArgumentParser(argparse.ArgumentParser):
 # FUNCTIONS
 #####################################################################
 
-def exit_with_error(message):
-    current_plugin = sys.argv[0]
-    print ('UNKNOWN: %s: - %s' % (current_plugin, message))
-    sys.exit(2)
-
-def exit_with_unknown(message):
-    current_plugin = sys.argv[0]
-    print ('UNKNOWN: %s: - %s' % (current_plugin, message))
-    sys.exit(3)
-
-def exit_string(message, exit_code):
-    print message
-    sys.exit(exit_code)
-
-def exit_list(messages, exit_code):
-    for message in messages:
-        print message
+def nelmon_exit(exit_code, output_message):
+    if isinstance(output_message, basestring):
+        print output_message
+    else:
+        for message in output_message:
+            print message
     sys.exit(exit_code)
 
 def verify_nelmon_features(minimum_version, current_version):
 
     if current_version < minimum_version:
-        exit_with_error('Requires Nelmon v.%s, download at http://networklore.com/nelmon/' % (minimum_version))
+        nelmon_exit(C.UNKNOWN, 'Requires Nelmon v.%s, download at http://networklore.com/nelmon/' % (minimum_version))

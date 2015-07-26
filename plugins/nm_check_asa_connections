@@ -3,8 +3,9 @@
 import nelmon.common
 import nelmon.snmp
 
-from nelmon.snmp_oids import cisco_oids as O
 from nelmon import constants as C
+from nelmon.snmp_oids import cisco_oids as O
+from nelmon.common import nelmon_exit
 
 MIN_NELMON_VER = "1.1"
 PLUGIN_VERSION = "1.1"
@@ -46,7 +47,7 @@ def main():
         exit_code = C.OK
         exit_string = "%d connections" % connections
 
-    nelmon.common.exit_string(exit_string, exit_code)
+    nelmon_exit(exit_code, exit_string)
 
 if __name__ == "__main__":
     main()

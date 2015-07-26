@@ -5,7 +5,8 @@
 
 import sys
 import nelmon.common
-from nelmon.common import exit_with_error
+from nelmon.common import nelmon_exit
+from nelmon import constants as C
 from argparse import RawTextHelpFormatter
 from nelsnmp.snmp import cmdgen, SnmpHandler
 
@@ -50,7 +51,7 @@ class NelmonSnmp(SnmpHandler):
         self._set_snmp_parameters(args)
 
     def _raise_error(self, ErrorType, error_data):
-        exit_with_error(error_data)
+        nelmon_exit(C.CRITICAL, error_data)
 
     def _set_snmp_parameters(self, args):
         # Change to SNMP community auth
@@ -80,24 +81,24 @@ class NelmonSnmp(SnmpHandler):
 
     def _verify_snmp_arguments(self, args):
         if args.P == "2c" and args.C is None:
-            exit_with_error('Specify community when using SNMP 2c')
+            nelmon_exit(C.UNKNOWN, 'Specify community when using SNMP 2c')
         if args.P == "3" and args.U is None:
-            exit_with_error('Specify username when using SNMP 3')
+            nelmon_exit(C.UNKNOWN, 'Specify username when using SNMP 3')
         if args.P == "3" and args.L is None:
-            exit_with_error('Specify security level when using SNMP 3')
+            nelmon_exit(C.UNKNOWN, 'Specify security level when using SNMP 3')
         if args.L == "authNoPriv" and args.a is None:
-            exit_with_error(
+            nelmon_exit(C.UNKNOWN,
                 'Specify authentication protocol when using authNoPriv')
         if args.L == "authNoPriv" and args.A is None:
-            exit_with_error(
+            nelmon_exit(C.UNKNOWN,
                 'Specify authentication password when using authNoPriv')
         if args.L == "authPriv" and args.a is None:
-            exit_with_error(
+            nelmon_exit(C.UNKNOWN,
                 'Specify authentication protocol when using authPriv')
         if args.L == "authPriv" and args.A is None:
-            exit_with_error(
+            nelmon_exit(C.UNKNOWN,
                 'Specify authentication password when using authPriv')
         if args.L == "authPriv" and args.x is None:
-            exit_with_error('Specify privacy protocol when using authPriv')
+            nelmon_exit(C.UNKNOWN, 'Specify privacy protocol when using authPriv')
         if args.L == "authPriv" and args.X is None:
-            exit_with_error('Specify privacy password when using authPriv')
+            nelmon_exit(C.UNKNOWN, 'Specify privacy password when using authPriv')
