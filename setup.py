@@ -1,6 +1,7 @@
 import re
 
 from codecs import open
+from glob import glob
 from setuptools import setup
 
 version = ''
@@ -30,6 +31,7 @@ config = {
     'license': 'Apache',
     'url': 'http://networklore.com/nelmon/',
     'install_requires': ['argparse', 'nelsnmp >= 0.1.7'],
+    'scripts': glob('plugins/*'),
     'classifiers': ['Development Status :: 4 - Beta',
                     'Intended Audience :: Developers',
                     'Intended Audience :: System Administrators']
