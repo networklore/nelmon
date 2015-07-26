@@ -1,6 +1,5 @@
 import sys
-
-
+from nelmon import __version__ as NELMON_VERSION
 
 OK = 0
 WARNING = 1
