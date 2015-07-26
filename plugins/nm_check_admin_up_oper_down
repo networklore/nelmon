@@ -4,6 +4,7 @@ import nelmon.common
 import nelmon.snmp
 
 from nelmon.snmp_oids import CiscoOids
+from nelmon import constants as C
 
 MIN_NELMON_VER = "1.1"
 PLUGIN_VERSION = "1.1"
@@ -21,7 +22,7 @@ def main():
 
 
     nelmon.common.verify_nelmon_features(MIN_NELMON_VER, nelmon.__version__)
-    e = nelmon.common.ExitStatus()
+    #e = nelmon.common.ExitStatus()
 
 
     argparser = nelmon.snmp.SnmpArguments(description)
@@ -33,9 +34,9 @@ def main():
     args = argparser.parser.parse_args()
 
     if args.c:
-        exit_status = e.CRITICAL
+        exit_status = C.CRITICAL
     elif args.w:
-        exit_status = e.WARNING
+        exit_status = C.WARNING
     else:
         nelmon.common.exit_with_unknown("Use -w or -c")
 
@@ -62,7 +63,7 @@ def main():
 
     down_interfaces = list(set(admin_up) & set(oper_down))
     if len(down_interfaces) == 0:
-        nelmon.common.exit_string("OK - No interfaces down", e.OK)
+        nelmon.common.exit_string("OK - No interfaces down", C.OK)
 
     oidlist = []
     interface_descr = {}

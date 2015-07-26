@@ -3,6 +3,7 @@
 import nelmon.common
 import nelmon.snmp
 from nelmon.snmp_oids import CiscoOids
+from nelmon import constants as C
 
 MIN_NELMON_VER = "1.1"
 PLUGIN_VERSION = "1.1"
@@ -31,18 +32,17 @@ def main():
     args = argparser.parser.parse_args()
     snmp = nelmon.snmp.NelmonSnmp(args)
     o = CiscoOids()
-    e = nelmon.common.ExitStatus()
     current_connections = o.cfwConnectionStatValue + ".40.6"
     connections = snmp.get_value(current_connections)
 
     if args.c <= connections:
-        exit_code = e.CRITICAL
+        exit_code = C.CRITICAL
         exit_string = "%d connections" % connections
     elif args.w <= connections:
-        exit_code = e.WARNING
+        exit_code = C.WARNING
         exit_string = "%d connections" % connections
     else:
-        exit_code = e.OK
+        exit_code = C.OK
         exit_string = "%d connections" % connections
 
     nelmon.common.exit_string(exit_string, exit_code)

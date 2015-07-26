@@ -10,14 +10,6 @@ except:
 # CLASSES
 #####################################################################
 
-class ExitStatus(object):
-
-    def __init__(self):
-        self.OK = 0
-        self.WARNING = 1
-        self.CRITICAL = 2
-        self.UNKNOWN = 3
-
 class HelpText(object):
 
     def __init__(self, description, epilog):
@@ -63,7 +55,6 @@ def exit_list(messages, exit_code):
     sys.exit(exit_code)
 
 def verify_nelmon_features(minimum_version, current_version):
-    
+
     if current_version < minimum_version:
         exit_with_error('Requires Nelmon v.%s, download at http://networklore.com/nelmon/' % (minimum_version))
-
