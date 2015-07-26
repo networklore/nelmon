@@ -7,7 +7,7 @@ from nelmon.globals import NelmonGlobals
 from nelmon.snmp_oids import cisco_oids as O
 from nelmon.snmp import NelmonSnmp, SnmpArguments
 
-NelmonGlobals(PLUGIN_VERSION='1.1', MIN_NELMON_VER = '1.1')
+NelmonGlobals(PLUGIN_VERSION='1.2', MIN_NELMON_VER = '1.2')
 
 description = """This plugin queries a network device by SNMP to check if there are
 any interfaces which are in the admin up (no shutdown) but are operationally
