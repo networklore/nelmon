@@ -80,11 +80,11 @@ def nelmon_exit(exit_code, output_message):
     prefix = ''
     if NelmonGlobals.OUTPUT_FORMAT == 'with_status':
         prefix = '%s - ' % C.STATUS_NAME[exit_code]
-    if isinstance(output_message, basestring):
-        print prefix + output_message
-    else:
+    if isinstance(output_message, list):
         for message in output_message:
             print prefix + message
+    else:
+        print prefix + str(output_message)
     sys.exit(exit_code)
 
 def verify_nelmon_features():
