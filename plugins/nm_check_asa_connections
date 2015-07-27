@@ -2,12 +2,12 @@
 #####################################################################
 
 from nelmon import constants as C
-from nelmon.common import nelmon_exit, verify_nelmon_features
+from nelmon.common import nelmon_exit
 from nelmon.globals import NelmonGlobals
 from nelmon.snmp_oids import cisco_oids as O
 from nelmon.snmp import NelmonSnmp, SnmpArguments
 
-NelmonGlobals(PLUGIN_VERSION='1.2', MIN_NELMON_VER = '1.2')
+NelmonGlobals(PLUGIN_VERSION='1.2')
 
 description = """This plugin queries a Cisco ASA device by SNMP to check how many
 current connections are established through the firewall.
@@ -18,7 +18,7 @@ current connections are established through the firewall.
 # http://networklore.com/check-asa-connections/
 
 def main():
-    verify_nelmon_features()
+
     argparser = SnmpArguments(description)
     argparser.parser.add_argument('-w',
         help='Number of connections to report warning state',

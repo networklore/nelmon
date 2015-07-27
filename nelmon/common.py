@@ -16,7 +16,7 @@ class HelpText(object):
         desc_prefix = "#" * 75
         desc_prefix += "\n"
         desc_suffix = "#" * 75
-        plugin = C.CURRENT_PLUGIN + ' v' ' ' + NelmonGlobals.PLUGIN_VERSION + '\n'
+        plugin = C.CURRENT_PLUGIN + ' v' + NelmonGlobals.PLUGIN_VERSION + '\n'
         self.description = desc_prefix + description + plugin + desc_suffix
         epilog_suffix = "#" * 75
         epilog_suffix += "\n"
@@ -36,6 +36,13 @@ class NelmonArguments(object):
 
         self.parser.add_argument('-V', help='Show version', action='store_true')
 
+        self.parser.add_argument(
+            '-O',
+            help='Output format',
+            choices=['standard', 'with_status'],
+            default='standard'
+        )
+
 
         self._add_local_args()
 
@@ -45,13 +52,23 @@ class NelmonArguments(object):
 class NlArgumentParser(argparse.ArgumentParser):
 
     def error(self, message):
-        self.exit(2, 'UNKNOWN: %s: error: %s\n' % (self.prog, message))
+        nelmon_exit(C.UNKNOWN, '%s: error: %s\n' % (self.prog, message))
 
     def parse_nelmon_args(self):
-        args = self.parse_args()
-        if args.V:
+        sys_args = sys.argv[1:]
+        choose_output = False
+        for sys_arg in sys_args:
+            if choose_output:
+                if sys_arg == 'with_status':
+                    NelmonGlobals(OUTPUT_FORMAT='with_status')
+                choose_output = False
+            if sys_arg == '-O':
+                choose_output = True
+        if '-V' in sys_args:
             output = '%s - v%s (Nelmon - v%s)' % (C.CURRENT_PLUGIN, NelmonGlobals.PLUGIN_VERSION, C.NELMON_VERSION)
             nelmon_exit(C.OK, output)
+        args = self.parse_args()
+
         return args
 
 
@@ -60,11 +77,14 @@ class NlArgumentParser(argparse.ArgumentParser):
 #####################################################################
 
 def nelmon_exit(exit_code, output_message):
+    prefix = ''
+    if NelmonGlobals.OUTPUT_FORMAT == 'with_status':
+        prefix = '%s - ' % C.STATUS_NAME[exit_code]
     if isinstance(output_message, basestring):
-        print output_message
+        print prefix + output_message
     else:
         for message in output_message:
-            print message
+            print prefix + message
     sys.exit(exit_code)
 
 def verify_nelmon_features():

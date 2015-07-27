@@ -2,12 +2,12 @@
 #####################################################################
 
 from nelmon import constants as C
-from nelmon.common import nelmon_exit, verify_nelmon_features
+from nelmon.common import nelmon_exit
 from nelmon.globals import NelmonGlobals
 from nelmon.snmp_oids import cisco_oids as O
 from nelmon.snmp import NelmonSnmp, SnmpArguments
 
-NelmonGlobals(PLUGIN_VERSION='1.2', MIN_NELMON_VER = '1.2')
+NelmonGlobals(PLUGIN_VERSION='1.2')
 
 description = """This plugin queries a network device by SNMP to check if there are
 any interfaces which are in the admin up (no shutdown) but are operationally
@@ -19,8 +19,6 @@ down. It returns a warning or critical state depending on if you use -w or -c
 # http://networklore.com/check-admin-up-oper-down
 
 def main():
-
-    verify_nelmon_features()
 
     argparser = SnmpArguments(description)
     argparser.parser.add_argument('-w', action='store_true',
@@ -60,7 +58,7 @@ def main():
 
     down_interfaces = list(set(admin_up) & set(oper_down))
     if len(down_interfaces) == 0:
-        nelmon_exit(C.OK, 'OK - No interfaces down')
+        nelmon_exit(C.OK, 'No interfaces down')
 
     oidlist = []
     interface_descr = {}

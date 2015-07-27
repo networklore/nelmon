@@ -6,4 +6,11 @@ WARNING = 1
 CRITICAL = 2
 UNKNOWN = 3
 
+STATUS_NAME = {
+    0: 'OK',
+    1: 'WARNING',
+    2: 'CRITICAL',
+    3: 'UNKNOWN'
+}
+
 CURRENT_PLUGIN = sys.argv[0]
