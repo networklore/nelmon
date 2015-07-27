@@ -1,8 +1,19 @@
 NELMON: Monitoring tools for Nagios and compatible products
 ===========================================================
 
-Currently only the module is installed when using 'pip install nelmon'.
+Install using pip:
 
-The plugin files must be downloaded separately from `GitHub`_
+.. code-block:: bash
 
-.. _GitHub: https://github.com/networklore/nelmon
+    $ pip install nelmon
+
+Or if you want the plugins to be installed to your Nagios plugins directory
+
+.. code-block:: bash
+
+    $ pip install nelmon --install-option="--install-scripts=/usr/local/nagios/libexec"
+
+When you need to upgrade:
+.. code-block:: bash
+
+    $ pip install -U nelmon --install-option="--install-scripts=/usr/local/nagios/libexec"
