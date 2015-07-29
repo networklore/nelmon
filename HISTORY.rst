@@ -3,10 +3,11 @@
 Release History
 ---------------
 
-1.3 (2015-xx-xx)
+1.3.0 (2015-07-29)
 ++++++++++++++++
 
 * Added nm_check_uptime
+* Added nm_check_version (only reports in this version)
 
 1.2 (2015-07-26)
 ++++++++++++++++
