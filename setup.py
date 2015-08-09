@@ -30,7 +30,7 @@ config = {
     'author_email': 'patrick@ogenstad.com',
     'license': 'Apache',
     'url': 'http://networklore.com/nelmon/',
-    'install_requires': ['argparse', 'nelsnmp >= 0.1.8'],
+    'install_requires': ['argparse', 'nelsnmp >= 0.2.0'],
     'scripts': glob('plugins/*'),
     'classifiers': ['Development Status :: 4 - Beta',
                     'Intended Audience :: Developers',
