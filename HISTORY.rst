@@ -6,7 +6,7 @@ Release History
 1.3.1 (2015-08-09)
 ++++++++++++++++++
 
-* Added nm_check_uptime
+* Added nm_check_environment
 
 1.3.0 (2015-07-29)
 ++++++++++++++++++
