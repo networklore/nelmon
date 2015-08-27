@@ -20,11 +20,20 @@ with open('HISTORY.rst', 'r', 'utf-8') as f:
 
 long_description = readme + '\n\n' + history
 
+console_scripts = [
+    'nm_check_admin_up_oper_down=nelmon.cli.check_admin_up_oper_down:main',
+    'nm_check_asa_connections=nelmon.cli.check_asa_connections:main',
+    'nm_check_environment=nelmon.cli.check_environment:main',
+    'nm_check_uptime=nelmon.cli.check_uptime:main',
+    'nm_check_version=nelmon.cli.check_version:main',
+]
+
 config = {
     'name': 'nelmon',
     'package_dir': {'': 'lib'},
     'packages': find_packages('lib'),
     'version': version,
+    'entry_points': {'console_scripts': console_scripts},
     'description': 'Monitoring Plugins for Nagios and compatible products',
     'long_description': long_description,
     'author': 'Patrick Ogenstad',
@@ -32,7 +41,6 @@ config = {
     'license': 'Apache',
     'url': 'http://networklore.com/nelmon/',
     'install_requires': ['argparse', 'nelsnmp >= 0.2.1'],
-    'scripts': glob('plugins/*'),
     'classifiers': ['Development Status :: 4 - Beta',
                     'Intended Audience :: Developers',
                     'Intended Audience :: System Administrators']
