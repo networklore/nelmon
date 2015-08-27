@@ -1,3 +1,6 @@
 *.pyc
 dist
 *.egg-info
+# test output
+.coverage
+.tox
