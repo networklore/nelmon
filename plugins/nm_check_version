@@ -6,7 +6,7 @@ from nelmon.common import nelmon_exit
 from nelmon.globals import NelmonGlobals
 from nelmon.snmp_oids import general_oids as O
 from nelmon.snmp import NelmonSnmp, SnmpArguments
-from nelsnmp.hostinfo.device import Hostinfo
+from nelsnmp.hostinfo.device import HostInfo
 
 NelmonGlobals(PLUGIN_VERSION='1.0')
 
@@ -23,7 +23,7 @@ def main():
     argparser = SnmpArguments(description)
     args = argparser.parser.parse_nelmon_args()
     snmp = NelmonSnmp(args)
-    hostinfo = Hostinfo(snmp)
+    hostinfo = HostInfo(snmp)
     hostinfo.get_version()
     nelmon_exit(C.OK, hostinfo.version)
 
