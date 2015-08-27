@@ -2,10 +2,10 @@ import re
 
 from codecs import open
 from glob import glob
-from setuptools import setup
+from setuptools import setup, find_packages
 
 version = ''
-with open('nelmon/__init__.py', 'r') as fd:
+with open('lib/nelmon/__init__.py', 'r') as fd:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                         fd.read(), re.MULTILINE).group(1)
 
@@ -22,7 +22,8 @@ long_description = readme + '\n\n' + history
 
 config = {
     'name': 'nelmon',
-    'packages': ['nelmon'],
+    'package_dir': {'': 'lib'},
+    'packages': find_packages('lib'),
     'version': version,
     'description': 'Monitoring Plugins for Nagios and compatible products',
     'long_description': long_description,
