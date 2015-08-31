@@ -1,0 +1,9 @@
+---
+approved:
+  8.4(7.23):
+critical:
+  8.4(7.11): "Multiple vulnerabilities in cisco-sa-20141008-asa"
+vulnerable:
+obsolete:
+  8.0(5):
+  8.0(4): "This version is end of life, upgrade to a later version"
