@@ -3,6 +3,11 @@
 Release History
 ---------------
 
+1.3.3 (2015-08-31)
+++++++++++++++++++
+
+* Monitor compliance with nm_check_version (-d)
+
 1.3.2 (2015-08-27)
 ++++++++++++++++++
 
