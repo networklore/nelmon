@@ -40,7 +40,7 @@ config = {
     'author_email': 'patrick@ogenstad.com',
     'license': 'Apache',
     'url': 'http://networklore.com/nelmon/',
-    'install_requires': ['argparse', 'nelsnmp >= 0.2.1'],
+    'install_requires': ['argparse', 'nelsnmp >= 0.2.2', 'PyYAML'],
     'classifiers': ['Development Status :: 4 - Beta',
                     'Intended Audience :: Developers',
                     'Intended Audience :: System Administrators']
