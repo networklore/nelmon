@@ -17,6 +17,7 @@ current connections are established through the firewall.
 # For more information about this plugin visit:
 # http://networklore.com/check-asa-connections/
 
+
 def main():
 
     argparser = SnmpArguments(description)
@@ -46,7 +47,10 @@ def main():
         exit_code = C.OK
         exit_string = "%d connections" % connections
 
-    nelmon_exit(exit_code, exit_string)
+    nelmon_exit(
+        exit_code,
+        exit_string,
+        perf_data='connections=%s' % connections)
 
 if __name__ == "__main__":
     main()
