@@ -3,6 +3,11 @@
 Release History
 ---------------
 
+1.3.4 (2015-xx-xx)
+++++++++++++++++++
+
+* Performance data (connections) using nm_check_asa_connections
+
 1.3.3 (2015-08-31)
 ++++++++++++++++++
 
