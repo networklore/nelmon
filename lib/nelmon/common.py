@@ -76,16 +76,29 @@ class NlArgumentParser(argparse.ArgumentParser):
 # FUNCTIONS
 #####################################################################
 
-def nelmon_exit(exit_code, output_message):
+def nelmon_exit(exit_code, output_message, perf_data=None):
     prefix = ''
     if NelmonGlobals.OUTPUT_FORMAT == 'with_status':
         prefix = '%s - ' % C.STATUS_NAME[exit_code]
-    if isinstance(output_message, list):
-        for message in output_message:
-            print prefix + message
+    if perf_data:
+        if isinstance(perf_data, list):
+            perf_header = ' | %s' % perf_data[0]
+        else:
+            perf_header = ' | %s' % perf_data
     else:
-        print prefix + str(output_message)
+        perf_header = ''
+    if isinstance(output_message, list):
+        i = 0
+        for message in output_message:
+            if i == 0:
+                print prefix + message + perf_header
+            else:
+                print message
+            i += 1
+    else:
+        print prefix + str(output_message) + perf_header
     sys.exit(exit_code)
+
 
 def verify_nelmon_features():
 
