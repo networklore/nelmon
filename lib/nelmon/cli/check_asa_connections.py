@@ -47,10 +47,15 @@ def main():
         exit_code = C.OK
         exit_string = "%d connections" % connections
 
+    if args.c and args.w:
+        perf_data = 'connections=%s:%s:%s' % (connections, args.w, args.c)
+    else:
+        perf_data = 'connections=%s' % connections
+
     nelmon_exit(
         exit_code,
         exit_string,
-        perf_data='connections=%s' % connections)
+        perf_data=perf_data)
 
 if __name__ == "__main__":
     main()
