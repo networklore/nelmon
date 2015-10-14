@@ -21,10 +21,12 @@ current connections are established through the firewall.
 def main():
 
     argparser = SnmpArguments(description)
-    argparser.parser.add_argument('-w',
+    argparser.parser.add_argument(
+        '-w',
         help='Number of connections to report warning state',
         type=int)
-    argparser.parser.add_argument('-c',
+    argparser.parser.add_argument(
+        '-c',
         help='Number of connections to report critical state',
         type=int)
 
@@ -48,7 +50,7 @@ def main():
         exit_string = "%d connections" % connections
 
     if args.c and args.w:
-        perf_data = 'connections=%s:%s:%s' % (connections, args.w, args.c)
+        perf_data = 'connections=%s;%s;%s' % (connections, args.w, args.c)
     else:
         perf_data = 'connections=%s' % connections
 
