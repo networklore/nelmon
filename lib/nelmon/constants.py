@@ -1,5 +1,7 @@
+"""nelmon.constants."""
+import os
 import sys
-from nelmon import __version__ as NELMON_VERSION
+from nelmon import __version__
 
 OK = 0
 WARNING = 1
@@ -12,5 +14,5 @@ STATUS_NAME = {
     2: 'CRITICAL',
     3: 'UNKNOWN'
 }
-
-CURRENT_PLUGIN = sys.argv[0]
+NELMON_VERSION = __version__
+CURRENT_PLUGIN = sys.argv[0].split(os.sep)[-1]

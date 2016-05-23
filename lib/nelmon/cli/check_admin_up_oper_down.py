@@ -1,11 +1,10 @@
-#!/usr/bin/env python2
-#####################################################################
-
+"""Plugin: Check Admin Up Oper Down."""
 from nelmon import constants as C
 from nelmon.common import nelmon_exit
 from nelmon.globals import NelmonGlobals
-from nelmon.snmp_oids import cisco_oids as O
-from nelmon.snmp import NelmonSnmp, SnmpArguments
+from nelmon.snmp.oids import cisco_oids as O
+from nelmon.snmp.args import SnmpArguments
+from nelmon.snmp.handler import NelmonSnmp
 
 NelmonGlobals(PLUGIN_VERSION='1.2')
 
@@ -14,17 +13,17 @@ any interfaces which are in the admin up (no shutdown) but are operationally
 down. It returns a warning or critical state depending on if you use -w or -c
 
 """
-
 # For more information about this plugin visit:
-# http://networklore.com/check-admin-up-oper-down
+# https://networklore.com/check-admin-up-oper-down
+
 
 def main():
-
+    """Plugin: check_admin_up_oper_down."""
     argparser = SnmpArguments(description)
     argparser.parser.add_argument('-w', action='store_true',
-        help='Return Warning if interfaces are down')
+                                  help='Return Warning if interfaces are down')
     argparser.parser.add_argument('-c', action='store_true',
-        help='Return Critical if interfaces are down')
+                                  help='Return Critical if interfaces are down')
 
     args = argparser.parser.parse_nelmon_args()
 

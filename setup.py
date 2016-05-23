@@ -1,7 +1,6 @@
+"""setup.py."""
 import re
-
 from codecs import open
-from glob import glob
 from setuptools import setup, find_packages
 
 version = ''
@@ -26,6 +25,7 @@ console_scripts = [
     'nm_check_environment=nelmon.cli.check_environment:main',
     'nm_check_uptime=nelmon.cli.check_uptime:main',
     'nm_check_version=nelmon.cli.check_version:main',
+    'nm_notify_slack=nelmon.cli.notify_slack:main',
 ]
 
 config = {
@@ -40,7 +40,7 @@ config = {
     'author_email': 'patrick@ogenstad.com',
     'license': 'Apache',
     'url': 'http://networklore.com/nelmon/',
-    'install_requires': ['argparse', 'nelsnmp >= 0.2.3', 'PyYAML'],
+    'install_requires': ['argparse', 'nelsnmp >= 0.2.3', 'PyYAML', 'requests'],
     'classifiers': ['Development Status :: 4 - Beta',
                     'Intended Audience :: Developers',
                     'Intended Audience :: System Administrators']

@@ -1,11 +1,11 @@
-#!/usr/bin/env python2
-#####################################################################
+"""Plugin: Check Uptime."""
 
 from nelmon import constants as C
 from nelmon.common import nelmon_exit
 from nelmon.globals import NelmonGlobals
-from nelmon.snmp_oids import general_oids as O
-from nelmon.snmp import NelmonSnmp, SnmpArguments
+from nelmon.snmp.oids import general_oids as O
+from nelmon.snmp.args import SnmpArguments
+from nelmon.snmp.handler import NelmonSnmp
 
 NelmonGlobals(PLUGIN_VERSION='1.0')
 
@@ -15,9 +15,11 @@ it has been up without reloading.
 """
 
 # For more information about this plugin visit:
-# http://networklore.com/nelmon/
+# https://networklore.com/nelmon/
+
 
 def main():
+    """Plugin: check_uptime."""
     argparser = SnmpArguments(description)
     args = argparser.parser.parse_nelmon_args()
     snmp = NelmonSnmp(args)
