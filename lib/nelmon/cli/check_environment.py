@@ -1,11 +1,11 @@
-#!/usr/bin/env python2
-#####################################################################
+"""Plugin: Check Environment."""
 
 from nelmon import constants as C
 from nelmon.common import nelmon_exit
 from nelmon.globals import NelmonGlobals
-from nelmon.snmp_oids import cisco_oids as O
-from nelmon.snmp import NelmonSnmp, SnmpArguments
+from nelmon.snmp.oids import cisco_oids as O
+from nelmon.snmp.args import SnmpArguments
+from nelmon.snmp.handler import NelmonSnmp
 from nelsnmp.hostinfo.device import HostInfo
 
 NelmonGlobals(PLUGIN_VERSION='1.0')
@@ -16,7 +16,7 @@ environmental (check, power, fans, temperature).
 """
 
 # For more information about this plugin visit:
-# http://networklore.com/nelmon/
+# https://networklore.com/nelmon/
 
 envmon_state = {
     1: 'normal',
@@ -36,9 +36,10 @@ envmon_state_map = {
     6: C.CRITICAL
 }
 
+
 class Sensor(object):
 
-    def __init__(self,sensor_id):
+    def __init__(self, sensor_id):
         self.sensor_id = sensor_id
         self.description = None
         self.state = None
@@ -52,6 +53,7 @@ class Sensor(object):
 
     def set_value(self, value):
         self.state = value
+
 
 class SensorCollection(object):
 
@@ -153,7 +155,7 @@ class SensorCollection(object):
 
 
 def main():
-
+    """Plugin: check_environment."""
     argparser = SnmpArguments(description)
 
     args = argparser.parser.parse_nelmon_args()
@@ -163,7 +165,9 @@ def main():
     hostinfo.get_vendor()
 
     if hostinfo.vendor != 'cisco':
-        nelmon_exit(C.UNKNOWN, '%s v%s only works with Cisco devices' % (C.CURRENT_PLUGIN, NelmonGlobals.PLUGIN_VERSION))
+        nelmon_exit(
+            C.UNKNOWN, '%s v%s only works with Cisco devices' % (
+                C.CURRENT_PLUGIN, NelmonGlobals.PLUGIN_VERSION))
 
     env_tables = snmp.getnext(O.ciscoEnvMonObjects)
     volt_sensors = {}
@@ -175,7 +179,7 @@ def main():
         for oid, value in env_table:
             if O.ciscoEnvMonVoltageStatusTable in oid:
                 sensor_id = oid.rsplit('.', 1)[-1]
-                if not sensor_id in volt_sensors.keys():
+                if sensor_id not in volt_sensors.keys():
                     volt_sensors[sensor_id] = Sensor(sensor_id)
                 if O.ciscoEnvMonVoltageStatusDescr in oid:
                     volt_sensors[sensor_id].set_description(value)
@@ -185,7 +189,7 @@ def main():
                     volt_sensors[sensor_id].set_state(value)
             if O.ciscoEnvMonTemperatureStatusTable in oid:
                 sensor_id = oid.rsplit('.', 1)[-1]
-                if not sensor_id in temp_sensors.keys():
+                if sensor_id not in temp_sensors.keys():
                     temp_sensors[sensor_id] = Sensor(sensor_id)
                 if O.ciscoEnvMonTemperatureStatusDescr in oid:
                     temp_sensors[sensor_id].set_description(value)
@@ -195,7 +199,7 @@ def main():
                     temp_sensors[sensor_id].set_state(value)
             if O.ciscoEnvMonFanStatusTable in oid:
                 sensor_id = oid.rsplit('.', 1)[-1]
-                if not sensor_id in fan_sensors.keys():
+                if sensor_id not in fan_sensors.keys():
                     fan_sensors[sensor_id] = Sensor(sensor_id)
                 if O.ciscoEnvMonFanStatusDescr in oid:
                     fan_sensors[sensor_id].set_description(value)
@@ -203,7 +207,7 @@ def main():
                     fan_sensors[sensor_id].set_state(value)
             if O.ciscoEnvMonSupplyStatusTable in oid:
                 sensor_id = oid.rsplit('.', 1)[-1]
-                if not sensor_id in pw_sensors.keys():
+                if sensor_id not in pw_sensors.keys():
                     pw_sensors[sensor_id] = Sensor(sensor_id)
                 if O.ciscoEnvMonSupplyStatusDescr in oid:
                     pw_sensors[sensor_id].set_description(value)

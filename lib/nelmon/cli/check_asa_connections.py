@@ -1,11 +1,11 @@
-#!/usr/bin/env python2
-#####################################################################
+"""Plugin: Check ASA Connections."""
 
 from nelmon import constants as C
 from nelmon.common import nelmon_exit
 from nelmon.globals import NelmonGlobals
-from nelmon.snmp_oids import cisco_oids as O
-from nelmon.snmp import NelmonSnmp, SnmpArguments
+from nelmon.snmp.oids import cisco_oids as O
+from nelmon.snmp.args import SnmpArguments
+from nelmon.snmp.handler import NelmonSnmp
 
 NelmonGlobals(PLUGIN_VERSION='1.2')
 
@@ -15,11 +15,11 @@ current connections are established through the firewall.
 """
 
 # For more information about this plugin visit:
-# http://networklore.com/check-asa-connections/
+# https://networklore.com/check-asa-connections/
 
 
 def main():
-
+    """Plugin: check_asa_connections."""
     argparser = SnmpArguments(description)
     argparser.parser.add_argument(
         '-w',

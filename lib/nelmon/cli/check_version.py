@@ -1,11 +1,12 @@
-#!/usr/bin/env python2
-#####################################################################
+"""Plugin: Check Version."""
+
 import os
 import yaml
 from nelmon import constants as C
 from nelmon.common import nelmon_exit
 from nelmon.globals import NelmonGlobals
-from nelmon.snmp import NelmonSnmp, SnmpArguments
+from nelmon.snmp.args import SnmpArguments
+from nelmon.snmp.handler import NelmonSnmp
 from nelsnmp.hostinfo.device import HostInfo
 
 NelmonGlobals(PLUGIN_VERSION='1.1')
@@ -13,20 +14,21 @@ NelmonGlobals(PLUGIN_VERSION='1.1')
 description = """This plugin queries a network device by SNMP to check which
 version is running on the device. It uses the HostInfo feature from Nelsnmp.
 To see a list of currently supported devices visit:
-http://networklore.com/nelsnmp-hostinfo/
+https://networklore.com/nelsnmp-hostinfo/
 
 The plugin can run in reporting mode to just retreive the device versions,
 or it can compare the current versions against your policy by specifying a
 directory (-d) of yaml files, one for each device class.
 For more information visit:
-http://networklore.com/nm-check-version/
+https://networklore.com/nm-check-version/
 """
 
 # For more information about this plugin visit:
-# http://networklore.com/nelmon/
+# https://networklore.com/nelmon/
 
 
 def main():
+    """Plugin: check_version."""
     argparser = SnmpArguments(description)
     argparser.parser.add_argument(
         '-d',

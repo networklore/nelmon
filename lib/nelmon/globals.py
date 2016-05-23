@@ -1,3 +1,4 @@
+"""nelmon.globals."""
 
 
 class NelmonGlobals(object):
