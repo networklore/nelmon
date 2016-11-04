@@ -54,6 +54,8 @@ class Notification(object):
             message += "%s " % self.service_state
         if self.service_description:
             message += "%s " % self.service_description
+        if self.service_output:
+            message += "%s " % self.service_output
 
         self.message = message
 
