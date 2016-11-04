@@ -3,6 +3,13 @@
 Release History
 ---------------
 
+1.3.5 (2016-11-04)
+++++++++++++++++++
+
+* New plugin nm_notify_slack
+* Bugfix for SNMPv3
+
+
 1.3.4 (2015-10-14)
 ++++++++++++++++++
 
