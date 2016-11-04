@@ -35,7 +35,17 @@ class NelmonSnmp(SnmpHandler):
 
             if args.L == "authPriv":
                 self.privkey = args.X
-
+                self.snmp_auth = cmdgen.UsmUserData(
+                    self.username,
+                    authKey=self.authkey,
+                    authProtocol=self.integrity,
+                    privKey=self.privkey,
+                    privProtocol=self.privacy)
+            else:
+                self.snmp_auth = cmdgen.UsmUserData(
+                    self.username,
+                    authKey=self.authkey,
+                    authProtocol=self.integrity)
         self.host = args.H
         self.port = int(args.p)
 
